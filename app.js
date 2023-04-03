@@ -24,7 +24,8 @@ app.use((request, response, next) => {
 
 
 // Endpoints --> Pontos de parada 
-const listCourse = require('./modulo/functions.js')
+const listCourse = require('./modulo/functions.js');
+const { getStudentInformation, getStudentsForCourse } = require("./modulo/functions.js");
 app.get("/v1/lion-school/cursos", cors(), async function (request, response, next) { // endpoint para listar os Estados
     let listCourseSchool = listCourse.getListCourse()
 
@@ -40,30 +41,77 @@ app.get("/v1/lion-school/alunos", cors(), async function (request, response, nex
 });
 
 
-app.get("/v1/lion-school/alunos/:matricula", cors(async function (request, response, next) {
+app.get("/v1/lion-school/alunos/:matricula", cors(),async function(request, response, next) {
 
-    let matricula = request.params.matricula
-    let statusCode
-    let dadosEstado = {}
+  let matricula = request.params.matricula
+  let statusCode
+  let dataStudent = {}
 
-    if (matricula == '' || matricula == undefined || isNaN(matricula)) {
-        statusCode = 400
-        dadosEstado.message = "Não é possível processar a requisição, pois a sigla do estado não foi informada ou não atende a quantidade de caracteres (2)."
-      } else {
-        let abc = listCourse.getStudentInformation(matricula)
-        if (abc) {
-          statusCode = 200
-          dadosEstado = abc
-        } else {
-          statusCode = 404
-        }
-      }
-      response.status(statusCode)
-      response.json(dadosEstado)
+  //Tratamento para vaidar os valores encaminhados no parâmetro
+  if (matricula == '' || matricula == undefined ) {
+      statusCode = 400
+      dataStudent.message = ("Não é possível processar a requisição!")
+  } else {
+      //chama a função que filtra o estado pela matricula
+      let student = getStudentInformation(matricula)
+      statusCode = 200  
+      dataStudent = student
+          //valida se houve retorno válido da funçao
+      
+  }
+
+  response.status(statusCode)
+  response.json(dataStudent)
+     
+})
 
 
-}))
+app.get("/v1/lion-school/alunos/por/:curso",cors(),async function(request, response,next){
 
+  let course = request.params.curso
+  let statusCode;
+  let dataCourse = {}
+
+  if (course == '' || course == undefined || !isNaN(course) ) {
+    statusCode = 400
+    dataCourse.message = ("Não é possível processar a requisição!")
+  } 
+    let funcao = listCourse.getStudentsForCourse(course)
+
+    if (funcao) {
+      statusCode = 200
+      dataCourse = funcao  
+    }else{
+      statusCode = 404
+    }
+    
+  response.status(statusCode)
+  response.json(dataCourse)
+  
+
+})
+
+app.get("/v1/lion-school/alunos/status/:status",cors(),async function(request,response,next){
+  let status = request.params.status
+  let statusCode;
+  let dataStatus = {}
+
+  if (status == '' || status == undefined || !isNaN(status) ) {
+    statusCode = 400
+    dataStatus.message = ("Não é possível processar a requisição!")
+  } 
+    let funcao = listCourse.getStudentsStatus(status)
+
+    if (funcao) {
+      statusCode = 200
+      dataStatus = funcao  
+    }else{
+      statusCode = 404
+    }
+    
+  response.status(statusCode)
+  response.json(dataStatus)
+})
 
 app.listen(8080, function () {
     console.log('Servidor aguardando requisições na porta 8080');

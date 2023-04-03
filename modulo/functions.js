@@ -47,10 +47,12 @@ const getStudentInformation = function(registration){
                 status:dataStudent.status,
                 photo:dataStudent.foto})
         }
+        
         jsonStudent.student = listStudent
     })
     return jsonStudent
 }
+
 
 const getStudentsForCourse = function(course){
     let listStudent = []
@@ -60,7 +62,6 @@ const getStudentsForCourse = function(course){
         students.curso.forEach(function(dataCourse){
 
             if(course == dataCourse.sigla){
-
                 listStudent.push(
                     {        
                         name:students.nome,
@@ -69,13 +70,19 @@ const getStudentsForCourse = function(course){
                         course:students.curso,
                         status:students.status,
                         photo:students.foto })
-
-                jsonStudent.Student = listStudent
             }
         })
+     
     })
+   jsonStudent.Student = listStudent
+   
     return jsonStudent
 }
+
+// console.log(getStudentsForCourse("DS"));
+
+
+
 
 const getStudentsStatus = function(status){
     let listStudent = []
