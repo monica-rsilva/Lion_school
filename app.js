@@ -26,6 +26,9 @@ app.use((request, response, next) => {
 // Endpoints --> Pontos de parada 
 const listCourse = require('./modulo/functions.js');
 const { getStudentInformation, getStudentsForCourse } = require("./modulo/functions.js");
+
+
+
 app.get("/v1/lion-school/cursos", cors(), async function (request, response, next) { // endpoint para listar os Estados
     let listCourseSchool = listCourse.getListCourse()
 
@@ -112,6 +115,8 @@ app.get("/v1/lion-school/alunos/status/:status",cors(),async function(request,re
   response.status(statusCode)
   response.json(dataStatus)
 })
+
+
 
 app.listen(8080, function () {
     console.log('Servidor aguardando requisições na porta 8080');

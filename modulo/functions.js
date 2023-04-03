@@ -3,6 +3,7 @@
 
 const course = require('./cursos.js')
 const student = require('./alunos.js')
+const alunos = require('./alunos.js')
 
 
 const getListCourse = function(){
@@ -53,7 +54,6 @@ const getStudentInformation = function(registration){
     return jsonStudent
 }
 
-
 const getStudentsForCourse = function(course){
     let listStudent = []
     let jsonStudent = {}
@@ -79,11 +79,6 @@ const getStudentsForCourse = function(course){
     return jsonStudent
 }
 
-// console.log(getStudentsForCourse("DS"));
-
-
-
-
 const getStudentsStatus = function(status){
     let listStudent = []
     let jsonStudent = {}
@@ -97,7 +92,10 @@ const getStudentsStatus = function(status){
                 sex:students.sexo,
                 course:students.curso,
                 status:students.status,
-                photo:students.foto
+                photo:students.foto,
+                date:students.curso.forEach(function(date){
+                    date.conclusao
+                })
             }
             )
           jsonStudent.name = listStudent
@@ -106,6 +104,12 @@ const getStudentsStatus = function(status){
     return jsonStudent
 }
 
+
+
+
+
+
+// EXTRAS 
 
 module.exports = {
     getListCourse,
