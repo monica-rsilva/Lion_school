@@ -11,7 +11,7 @@ const getListCourse = function(){
     let jsonCourse = {}
  
     course.cursos.forEach(function(dataCourse){
-        listCourse.push(dataCourse.nome)
+        listCourse.push({nome:dataCourse.nome,sigla:dataCourse.sigla,icone:dataCourse.icone,carg:dataCourse.carga})
         jsonCourse.course = listCourse
     })
     return jsonCourse
